@@ -1,0 +1,38 @@
+body {
+  background: gray;
+  font-family: monospace;
+}
+h1 {
+  font-size: 12px;
+  font-weight: bold;
+  background: white;
+}
+a, a:visited, a:hover{
+  color: white;
+}
+
+#gamecnv{
+  font-size: 10pt;
+  border: 3px solid black;
+  display:inline-block;
+  white-space: pre;
+  background: black;
+  color:white;  
+}
+
+#thepoint{
+  display: none;
+}
+
+@media print{
+
+  #gamecnv{
+    display: none;
+  }
+
+  #thepoint{
+    display: block !important;
+    margin: 50mm;
+    font-size: 12pt;
+  }
+}
