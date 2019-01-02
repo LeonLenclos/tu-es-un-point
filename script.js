@@ -4,6 +4,11 @@ let keys = [];
 game = new Game(gamecnv.innerHTML);
 
 setInterval(main, 1);
+window.onbeforeunload = resetKeys;
+  function resetKeys()
+  {
+    keys = []
+   }
 
 
 document.addEventListener('keydown', function(event) {
@@ -24,6 +29,7 @@ document.addEventListener('keyup', function(event) {
 let loopDelay = 30;
 let loopTime =Date.now();
 let fpss = [];
+
 function main() {
 	
 	if (Date.now() - loopTime > loopDelay){
@@ -33,8 +39,11 @@ function main() {
 		game.pressed(keys)
 		game.update();
 		let display = game.display();
-		if (gamecnv.innerHTML != display)
+		if (gamecnv.innerHTML != display){
 			gamecnv.innerHTML = display;
+			let point = document.getElementById("point")
+			if (point){ point.scrollIntoView({behavior: "instant", block: "center", inline: "center"});}
+		}
 	}
 
 }

@@ -28,13 +28,22 @@ class Game {
   	this.soundJump = new Audio("audio/jump.wav")
   	this.soundWin = new Audio("audio/win.wav")
 
+
+    // timeouts array
+    this.timeouts = [];
+
   	// Launch the game
   	this.reset()
   }
 
   // reset function, launch or reset the game
   reset(){
-  	this.gameover = false;
+  	 //reset timeouts
+     for (var i = 0; i < this.timeouts.length; i++) {
+       clearTimeout(this.timeouts[i]);
+     }
+
+    this.gameover = false;
   	// The world (each lines in an array of strings)
   	this.world = this.lvlHTML.replace(/&gt;/g,">").split("\n");
 
@@ -43,6 +52,8 @@ class Game {
     this.width = 0;
   	for (var i = 0; i < this.world.length; i++) {
   		if(this.width < this.world[i].length) this.width = this.world[i].length;
+
+    
   	}
   	
 
@@ -62,6 +73,8 @@ class Game {
 			this.world[i] += Array(this.width - this.world[i].length + 1).join(' ');
 		}
 	}
+      keys = [];
+
 }
   pressed(keys){
   	for (var i = 0; i < keys.length; i++) {
@@ -101,7 +114,7 @@ class Game {
 
   nextLvl(){
   	this.soundDoor.play();
-  	setTimeout(function(){window.location.href = nxtLvlURL;}, 2000);
+  	this.timeouts.push(setTimeout(function(){window.location.href = nxtLvlURL;}, 2000));
   }
 
 
@@ -128,14 +141,22 @@ class Game {
   	
   	  	else if(this.world[this.player.y][this.player.x] == DOOR_CHAR){
   	  		if(typeof mdp !== 'undefined'){
-  	  			let typedMdp = prompt("Entrez le mot de passe").toLowerCase();
-  	  			if(mdp=="*" || mdp==typedMdp){
-  	  				alert("Mot de passe correct !")
-  	  			} else {
-  	  				alert("Mot de passe incorrect... Accès refusé.");
-  	  				this.reset();
-  	  				return;
-  	  			}
+  	  			let typedMdp = prompt("Entrez le mot de passe");
+            if(typedMdp == null){
+              this.reset();
+              return;
+            }
+            else {
+              typedMdp = typedMdp.toLowerCase();
+              if(mdp=="*" || mdp==typedMdp){
+                  alert("Oui !")
+              } else {
+                alert("Mauvais mot de passe... Accès refusé.");
+                this.reset();
+                return;
+              }
+            }
+
   	  		}
   	  		this.player = null;
   	  		this.nextLvl();
@@ -147,7 +168,7 @@ class Game {
   	  		this.player = null;
   	  		this.soundGameOver.play();
   	  		let thisGame = this;
-  	  		setTimeout(function(){thisGame.gameover = true;}, 1000);
+          this.timeouts.push(setTimeout(function(){thisGame.gameover = true;}, 1000));
   	  		
   	  	}
 
@@ -166,7 +187,8 @@ class Game {
    	if (this.gameover) return "\n   TU ES MORT (appuie sur R pour recommencer)   \n\n";
    	let world = this.world.slice();
    	if (this.player){
-   	   	world[this.player.y] = setCharAt(world[this.player.y], PLAYER_CHAR, this.player.x);
+        let playerHTML = '<span id="point">' + PLAYER_CHAR + '</span>';
+   	   	world[this.player.y] = setCharAt(world[this.player.y], playerHTML, this.player.x);
    	}
    	let txt = world.join("\n");
     return txt;
@@ -181,7 +203,7 @@ class Player {
 		this.acc = new Vector(0,0);
 
 		this.jumpForce = new Vector (0,-1.2);
-		this.moveForce = new Vector (.06,0);
+		this.moveForce = new Vector (.09,0);
 		this.moveLimit = 1;
 		this.landed = false;
 	}
@@ -238,7 +260,7 @@ class Player {
 	    } else if (this.vel.y < -1){
 	    	this.vel.y = -1;
 	    }
-	    this.vel.x *= .95;
+	    this.vel.x *= .90;
 		this.pos = this.pos.add(this.vel);
 	    this.acc = new Vector(0,0);
 
