@@ -9,7 +9,6 @@
 
 	<body>
 <?php
-	require_once("config.php");
 
 	function edit_form($name='', $level='', $warning='')
 	{
@@ -23,7 +22,8 @@
 	function save_form($name='', $level='')
 	{
 
-		// Create connection 
+		// Create connection
+		require_once("config.php");
 		$conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 		// Check connection
 		if ($conn->connect_error) {
