@@ -1,4 +1,4 @@
 # tu-es-un-point
 Javascript video game
 
-**Online soon**
+Play here : http://leonlenclos.net/tu-es-un-point/
