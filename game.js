@@ -44,6 +44,7 @@ class Game {
      }
 
     this.gameover = false;
+    this.win = false;
   	// The world (each lines in an array of strings)
   	this.world = this.lvlHTML.replace(/&gt;/g,">").split("\n");
 
@@ -83,13 +84,16 @@ class Game {
 		    this.reset();
 		    break;
 		  case "ArrowRight":
+      case "d":
 		    if(this.player) this.player.moveRight();
 		    break;
 		  case "ArrowLeft":
+      case "q":
 		    if(this.player) this.player.moveLeft();
 		    break;
-		  case "Space":
+		  case " ":
 		  case "ArrowUp":
+      case "z":
 		    if(this.player){
 		    	if (this.player.jump()){
 		    		this.soundJump.currentTime = 0;
@@ -114,7 +118,19 @@ class Game {
 
   nextLvl(){
   	this.soundDoor.play();
-  	this.timeouts.push(setTimeout(function(){window.location.href = nxtLvlURL;}, 2000));
+    console.log(nxtLvlURL)
+    if(nxtLvlURL == "win"){
+      this.win = true;
+      if(document.getElementById('enregistrer')){
+        document.getElementById('enregistrer').disabled = false;
+      }
+
+    }
+    else {
+      this.timeouts.push(setTimeout(function(){window.location.href = nxtLvlURL;}, 2000));
+    }
+
+
   }
 
 
@@ -184,7 +200,8 @@ class Game {
   }
 
    display() {
-   	if (this.gameover) return "\n   TU ES MORT (appuie sur R pour recommencer)   \n\n";
+    if (this.gameover) return "\n   TU ES MORT (appuie sur R pour recommencer)   \n\n";
+   	if (this.win) return "\n   TU AS GAGNÉ (BRAVO !) (appuie sur R pour recommencer)   \n\n";
    	let world = this.world.slice();
    	if (this.player){
         let playerHTML = '<span id="point">' + PLAYER_CHAR + '</span>';

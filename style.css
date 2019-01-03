@@ -36,3 +36,37 @@ a, a:visited, a:hover{
     font-size: 12pt;
   }
 }
+
+.help, nav {
+  border-top: solid black 1px;
+  margin-top: 70px;
+}
+nav {
+  text-align: right;
+}
+code {
+  background: black;
+  color: white;
+  padding: 1px;
+}
+li{
+  margin: 5px;
+}
+input, textarea {
+  border: solid white 1px;
+  margin: 5px;
+  display: block;
+  background: black;
+  color: white;
+}
+input:hover {
+  color: gray;
+}
+
+:disabled {
+  background: gray;
+}
+:disabled:hover {
+  color: white;
+}
+
